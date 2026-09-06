@@ -13,7 +13,10 @@
 	<arg name="parallel" value="8"/>
 	<arg name="extensions" value="php"/>
 
-	<rule ref="WordPress-Extra"/>
+	<rule ref="WordPress-Extra">
+		<exclude name="WordPress.Files.FileName"/>
+	</rule>
+
 	<rule ref="WordPress-Docs"/>
 	<rule ref="Generic.Commenting.Todo"/>
 
@@ -31,6 +34,7 @@
 		<properties>
 			<property name="prefixes" type="array">
 				<element value="dmg_read_more"/>
+				<element value="DMG\ReadMore"/>
 			</property>
 		</properties>
 	</rule>

@@ -13,11 +13,17 @@
  * @package DMG_Read_More
  */
 
+use DMG\ReadMore\CLI\SearchCommand;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
 require __DIR__ . '/vendor/autoload.php';
+
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+	WP_CLI::add_command( 'dmg-read-more search', SearchCommand::class );
+}
 
 /**
  * Registers the block(s) metadata from the `blocks-manifest.php` and registers the block type(s)
