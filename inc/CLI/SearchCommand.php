@@ -8,6 +8,8 @@
 namespace DMG\ReadMore\CLI;
 
 use WP_CLI;
+use InvalidArgumentException;
+use WP_Query;
 
 /**
  * Finds published posts containing the DMG Read More block within a date range.
@@ -45,6 +47,43 @@ class SearchCommand {
 	 * @return void
 	 */
 	public function __invoke( $args, $assoc_args ) {
-		WP_CLI::log( 'Hello!' );
+		try {
+			$range = DateRange::from_assoc_args( $assoc_args );
+		} catch ( InvalidArgumentException $e ) {
+			WP_CLI::error( $e->getMessage() );
+		}
+
+		$date_after  = wp_date( 'Y-m-d H:i:s', $range['after'] );
+		$date_before = wp_date( 'Y-m-d H:i:s', $range['before'] );
+
+		$query_args = array(
+			'post_type'              => 'post',
+			'post_status'            => 'publish',
+			'date_query'             => array(
+				'after'     => $date_after,
+				'before'    => $date_before,
+				'inclusive' => true,
+			),
+			's'                      => 'wp:dmg/read-more',
+			'fields'                 => 'ids',
+			// phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_posts_per_page -- Batch size for a CLI command, not a page render: with fields => 'ids' each row is one integer, and this is bounded rather than -1.
+			'posts_per_page'         => 500,
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+			'ignore_sticky_posts'    => true,
+			'orderby'                => 'ID',
+			'order'                  => 'ASC',
+		);
+
+		$post_ids = ( new WP_Query( $query_args ) )->posts;
+
+		if ( ! $post_ids ) {
+			WP_CLI::warning( 'No posts found in the given date range.' );
+		} else {
+			foreach ( $post_ids as $post_id ) {
+				WP_CLI::log( $post_id );
+			}
+		}
 	}
 }
