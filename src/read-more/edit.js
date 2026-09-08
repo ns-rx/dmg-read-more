@@ -11,6 +11,7 @@ import { __ } from '@wordpress/i18n';
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
 import { useBlockProps } from '@wordpress/block-editor';
+import { Placeholder } from '@wordpress/components';
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
  * Those files can contain any CSS code that gets applied to the editor.
@@ -25,12 +26,34 @@ import './editor.scss';
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
  *
+ * @param {Object} props            Component props.
+ * @param {Object} props.attributes Block attributes.
  * @return {Element} Element to render.
  */
-export default function Edit() {
+export default function Edit( { attributes } ) {
+	const postId = attributes.postId;
+	const postTitle = attributes.postTitle;
+	const postUrl = attributes.postUrl;
+
+	const blockProps = useBlockProps( { className: 'dmg-read-more' } );
+
+	if ( ! postId ) {
+		return (
+			<Placeholder
+				{ ...blockProps }
+				icon="admin-links"
+				label={ __( 'DMG Read More', 'dmg-read-more' ) }
+				instructions={ __(
+					'Search for a post in the block settings sidebar to create a Read More link.',
+					'dmg-read-more'
+				) }
+			/>
+		);
+	}
+
 	return (
-		<p { ...useBlockProps() }>
-			{ __( 'DMG Read More – hello from the editor!', 'dmg-read-more' ) }
+		<p { ...blockProps }>
+			<a href={ postUrl }>Read More: { postTitle }</a>
 		</p>
 	);
 }
