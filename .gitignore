@@ -33,8 +33,9 @@ vendor/
 # Build directory
 build/
 
-# PHPUnit result cache
+# PHPUnit caches
 .phpunit.result.cache
+.phpunit.cache/
 
 # Playwright's own failure screenshots/traces/storage-state
 artifacts/

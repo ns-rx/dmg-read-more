@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+	bootstrap="vendor/autoload.php"
+	cacheDirectory=".phpunit.cache"
+	colors="true"
+	failOnWarning="true"
+	failOnNotice="true"
+	beStrictAboutOutputDuringTests="true">
+
+	<testsuites>
+		<testsuite name="unit">
+			<directory>tests</directory>
+		</testsuite>
+	</testsuites>
+
+	<source>
+		<include>
+			<directory>inc</directory>
+		</include>
+	</source>
+
+	<php>
+		<!-- Fixed timezone so date parsing is deterministic wherever the suite runs. -->
+		<ini name="date.timezone" value="UTC"/>
+	</php>
+</phpunit>
