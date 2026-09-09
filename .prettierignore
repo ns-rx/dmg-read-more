@@ -1,2 +1,8 @@
 # GitHub Actions workflows conventionally use 2-space YAML indentation.
 .github/
+
+# Generated and third-party code. PHP_CodeSniffer in particular ships
+# intentionally malformed JS fixtures that Prettier cannot parse.
+build/
+vendor/
+node_modules/
