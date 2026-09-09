@@ -17,9 +17,11 @@ import {
 	SearchControl,
 	Spinner,
 	Button,
+	Flex,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { useDebouncedInput } from '@wordpress/compose';
+import { useState } from '@wordpress/element';
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
  * Those files can contain any CSS code that gets applied to the editor.
@@ -27,6 +29,8 @@ import { useDebouncedInput } from '@wordpress/compose';
  * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
  */
 import './editor.scss';
+
+const PER_PAGE = 10;
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -49,18 +53,24 @@ export default function Edit( { attributes, setAttributes } ) {
 	const [ searchInput, setSearchInput, debouncedSearch ] =
 		useDebouncedInput( '' );
 
+	const [ page, setPage ] = useState( 1 );
+
 	const { posts, hasResolved } = useSelect(
 		( select ) => {
-			const selectorArgs = [
-				'postType',
-				'post',
-				{
-					per_page: 10,
-					status: 'publish',
-					_fields: [ 'id', 'title', 'link' ],
-					search: debouncedSearch,
-				},
-			];
+			const query = {
+				per_page: PER_PAGE,
+				status: 'publish',
+				_fields: [ 'id', 'title', 'link' ],
+				page,
+			};
+
+			if ( /^\d+$/.test( debouncedSearch ) ) {
+				query.include = [ parseInt( debouncedSearch, 10 ) ];
+			} else if ( debouncedSearch ) {
+				query.search = debouncedSearch;
+			}
+
+			const selectorArgs = [ 'postType', 'post', query ];
 
 			return {
 				posts: select( 'core' ).getEntityRecords( ...selectorArgs ),
@@ -70,7 +80,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				),
 			};
 		},
-		[ debouncedSearch ]
+		[ debouncedSearch, page ]
 	);
 
 	return (
@@ -80,7 +90,10 @@ export default function Edit( { attributes, setAttributes } ) {
 					<SearchControl
 						label={ __( 'Search posts', 'dmg-read-more' ) }
 						value={ searchInput }
-						onChange={ setSearchInput }
+						onChange={ ( value ) => {
+							setSearchInput( value );
+							setPage( 1 );
+						} }
 					/>
 
 					{ ! hasResolved && <Spinner /> }
@@ -108,6 +121,25 @@ export default function Edit( { attributes, setAttributes } ) {
 								</li>
 							) ) }
 						</ul>
+					) }
+
+					{ hasResolved && (
+						<Flex justify="space-between">
+							<Button
+								variant="secondary"
+								disabled={ page === 1 }
+								onClick={ () => setPage( page - 1 ) }
+							>
+								{ __( 'Previous', 'dmg-read-more' ) }
+							</Button>
+							<Button
+								variant="secondary"
+								disabled={ posts?.length < PER_PAGE }
+								onClick={ () => setPage( page + 1 ) }
+							>
+								{ __( 'Next', 'dmg-read-more' ) }
+							</Button>
+						</Flex>
 					) }
 				</PanelBody>
 			</InspectorControls>
