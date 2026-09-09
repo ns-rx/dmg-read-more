@@ -20,6 +20,24 @@ jobs:
       - run: composer install --no-interaction --prefer-dist
       - run: composer lint
 
+  php-tests:
+    name: PHP unit tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # The declared floor, plus a current release.
+        php-version: [ '8.1', '8.4' ]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer
+          coverage: none
+      - run: composer install --no-interaction --prefer-dist
+      - run: composer test
+
   js-quality:
     name: JS lint + build
     runs-on: ubuntu-latest
