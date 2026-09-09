@@ -2,7 +2,7 @@
 
 A WordPress plugin with two features: a Gutenberg block that inserts a stylised "Read More" link to another post, and a WP-CLI command that finds posts containing that block.
 
-Requires WordPress 6.7+ and PHP 8.1+.
+Requires WordPress 6.7+ and PHP 8.2+.
 
 ## Setup
 

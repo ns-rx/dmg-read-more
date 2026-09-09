@@ -3,7 +3,7 @@
 	"description": "Displays a Read More link to another published post.",
 	"license": "GPL-2.0-or-later",
 	"require": {
-		"php": ">=8.1"
+		"php": ">=8.2"
 	},
 	"require-dev": {
 		"wp-coding-standards/wpcs": "^3.4",
@@ -31,7 +31,7 @@
 			"dealerdirect/phpcodesniffer-composer-installer": true
 		},
 		"platform": {
-			"php": "8.1"
+			"php": "8.2"
 		}
 	}
 }
