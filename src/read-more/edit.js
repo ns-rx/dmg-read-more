@@ -19,7 +19,7 @@ import {
 	Button,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
-import { useState } from '@wordpress/element';
+import { useDebouncedInput } from '@wordpress/compose';
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
  * Those files can contain any CSS code that gets applied to the editor.
@@ -46,7 +46,8 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	const blockProps = useBlockProps( { className: 'dmg-read-more' } );
 
-	const [ searchInput, setSearchInput ] = useState( '' );
+	const [ searchInput, setSearchInput, debouncedSearch ] =
+		useDebouncedInput( '' );
 
 	const { posts, hasResolved } = useSelect(
 		( select ) => {
@@ -57,7 +58,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					per_page: 10,
 					status: 'publish',
 					_fields: [ 'id', 'title', 'link' ],
-					search: searchInput,
+					search: debouncedSearch,
 				},
 			];
 
@@ -69,7 +70,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				),
 			};
 		},
-		[ searchInput ]
+		[ debouncedSearch ]
 	);
 
 	return (

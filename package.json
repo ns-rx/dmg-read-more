@@ -18,6 +18,7 @@
 		"@wordpress/block-editor": "latest",
 		"@wordpress/blocks": "latest",
 		"@wordpress/components": "^40.0.0",
+		"@wordpress/compose": "^8.7.0",
 		"@wordpress/data": "^10.54.0",
 		"@wordpress/element": "^8.6.0",
 		"@wordpress/i18n": "latest"
