@@ -10,7 +10,7 @@ jobs:
     name: PHP validate + lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
@@ -29,7 +29,7 @@ jobs:
         # The declared floor, plus a current release.
         php-version: [ '8.2', '8.4' ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
@@ -42,8 +42,8 @@ jobs:
     name: JS lint + build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: '24'
           cache: npm
