@@ -76,14 +76,25 @@ class SearchCommand {
 			'order'                  => 'ASC',
 		);
 
-		$post_ids = ( new WP_Query( $query_args ) )->posts;
+		$paged     = 1;
+		$found_any = false;
 
-		if ( ! $post_ids ) {
-			WP_CLI::warning( 'No posts found in the given date range.' );
-		} else {
+		do {
+			$query_args['paged'] = $paged;
+
+			$post_ids   = ( new WP_Query( $query_args ) )->posts;
+			$batch_size = count( $post_ids );
+
 			foreach ( $post_ids as $post_id ) {
 				WP_CLI::log( $post_id );
+				$found_any = true;
 			}
+
+			++$paged;
+		} while ( $batch_size === $query_args['posts_per_page'] );
+
+		if ( ! $found_any ) {
+			WP_CLI::warning( 'No posts found in the given date range.' );
 		}
 	}
 }
