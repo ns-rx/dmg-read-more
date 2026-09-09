@@ -8,6 +8,17 @@
 	"icon": "admin-links",
 	"description": "Displays a Read More link to another published post.",
 	"example": {},
+	"attributes": {
+		"postId": {
+			"type": "integer"
+		},
+		"postTitle": {
+			"type": "string"
+		},
+		"postUrl": {
+			"type": "string"
+		}
+	},
 	"supports": {
 		"html": false
 	},

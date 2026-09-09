@@ -2,8 +2,8 @@
 	"name": "dmg/read-more",
 	"description": "Displays a Read More link to another published post.",
 	"license": "GPL-2.0-or-later",
-	"require": { 
-		"php": ">=8.1" 
+	"require": {
+		"php": ">=8.1"
 	},
 	"require-dev": {
 		"wp-coding-standards/wpcs": "^3.4",
