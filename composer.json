@@ -7,7 +7,8 @@
 	},
 	"require-dev": {
 		"wp-coding-standards/wpcs": "^3.4",
-		"dealerdirect/phpcodesniffer-composer-installer": "^1.2"
+		"dealerdirect/phpcodesniffer-composer-installer": "^1.2",
+		"phpunit/phpunit": "^10.5"
 	},
 	"type": "wordpress-plugin",
 	"autoload": {
@@ -15,9 +16,15 @@
 			"DMG\\ReadMore\\": "inc/"
 		}
 	},
+	"autoload-dev": {
+		"psr-4": {
+			"DMG\\ReadMore\\Tests\\": "tests/"
+		}
+	},
 	"scripts": {
 		"lint": "phpcs",
-		"lint:fix": "phpcbf"
+		"lint:fix": "phpcbf",
+		"test": "phpunit"
 	},
 	"config": {
 		"allow-plugins": {
